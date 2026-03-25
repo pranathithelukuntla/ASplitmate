@@ -14,6 +14,7 @@ import AddExpense from './pages/AddExpense';
 import SettlementView from './pages/SettlementView';
 import Analytics from './pages/Analytics';
 
+
 function App() {
   return (
     <AuthProvider>

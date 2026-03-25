@@ -85,19 +85,13 @@ public class SettlementService {
                 netBalance.merge(userId, split.getAmount().negate(), BigDecimal::add);
             }
         }
-        for (Settlement s : settlementRepository.findByGroupOrderBySettlementDateDesc(group)) {
+for (Settlement s : settlementRepository.findByGroupOrderBySettlementDateDesc(group)) {
             Long payerId = s.getPayer().getId();
             Long receiverId = s.getReceiver().getId();
-            BigDecimal beforePayerBalance = netBalance.get(payerId);
-            BigDecimal beforeReceiverBalance = netBalance.get(receiverId);
-            
-            netBalance.merge(payerId, s.getAmount().negate(), BigDecimal::add);
-            netBalance.merge(receiverId, s.getAmount(), BigDecimal::add);
-            
-            System.out.println("[DEBUG Settlement in netBalance]");
-            System.out.println("  Payer " + payerId + ": " + beforePayerBalance + " -> " + netBalance.get(payerId));
-            System.out.println("  Receiver " + receiverId + ": " + beforeReceiverBalance + " -> " + netBalance.get(receiverId));
-            System.out.println("  Amount: " + s.getAmount());
+            // Payer is clearing their debt: their balance moves toward 0 (increases)
+            // Receiver is being paid back: their credit reduces (decreases)
+            netBalance.merge(payerId, s.getAmount(), BigDecimal::add);
+            netBalance.merge(receiverId, s.getAmount().negate(), BigDecimal::add);
         }
 
         // Separate creditors and debtors
@@ -301,14 +295,13 @@ public class SettlementService {
             }
         }
 
-        for (Settlement s : settlementRepository.findByGroupOrderBySettlementDateDesc(group)) {
+for (Settlement s : settlementRepository.findByGroupOrderBySettlementDateDesc(group)) {
             Long payerId = s.getPayer().getId();
             Long receiverId = s.getReceiver().getId();
-            System.out.println("[DEBUG getBalances Settlement] Payer: " + payerId + ", Receiver: " + receiverId + ", Amount: " + s.getAmount());
-            System.out.println("  Before - Payer: " + netBalance.get(payerId) + ", Receiver: " + netBalance.get(receiverId));
-            netBalance.merge(payerId, s.getAmount().negate(), BigDecimal::add);
-            netBalance.merge(receiverId, s.getAmount(), BigDecimal::add);
-            System.out.println("  After - Payer: " + netBalance.get(payerId) + ", Receiver: " + netBalance.get(receiverId));
+            // Payer settles their debt → balance increases (toward 0)
+            // Receiver gets paid back → their credit decreases
+            netBalance.merge(payerId, s.getAmount(), BigDecimal::add);
+            netBalance.merge(receiverId, s.getAmount().negate(), BigDecimal::add);
         }
 
         return netBalance.entrySet().stream()

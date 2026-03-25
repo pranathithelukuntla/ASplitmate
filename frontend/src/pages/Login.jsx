@@ -8,10 +8,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
-  if (isAuthenticated) {
-    navigate('/dashboard');
-    return null;
-  }
 
   const handleSubmit = async (data) => {
     setError('');

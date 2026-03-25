@@ -159,46 +159,79 @@ const SettlementView = () => {
             </button>
           </div>
           <div className="space-y-2">
-            {balances.map((balance) => (
-              <div
-                key={balance.userId}
-                className={`flex justify-between items-center p-3 rounded ${
-                  balance.balance > 0
-                    ? 'bg-green-50 border border-green-200'
-                    : balance.balance < 0
-                    ? 'bg-red-50 border border-red-200'
-                    : 'bg-gray-50 border border-gray-200'
-                }`}
-              >
-                <span className="font-medium">{balance.userName}</span>
-                <span
-                  className={`font-semibold ${
-                    balance.balance > 0
-                      ? 'text-green-600'
-                      : balance.balance < 0
-                      ? 'text-red-600'
-                      : 'text-gray-600'
+            {balances.map((balance) => {
+              const isSettled = balance.balance === 0;
+              const isCreditor = balance.balance > 0;
+              return (
+                <div
+                  key={balance.userId}
+                  className={`flex justify-between items-center p-3 rounded ${
+                    isCreditor
+                      ? 'bg-green-50 border border-green-200'
+                      : isSettled
+                      ? 'bg-gray-50 border border-gray-200'
+                      : 'bg-red-50 border border-red-200'
                   }`}
                 >
-                  {balance.balance > 0 ? '+' : ''}₹{balance.balance.toFixed(2)}
-                </span>
-              </div>
-            ))}
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">{balance.userName}</span>
+                    {isSettled && !isCreditor && (
+                      <span className="text-xs bg-green-100 text-green-700 border border-green-300 rounded-full px-2 py-0.5 font-semibold">
+                        ✓ Paid Done
+                      </span>
+                    )}
+                  </div>
+                  <span
+                    className={`font-semibold ${
+                      isCreditor
+                        ? 'text-green-600'
+                        : isSettled
+                        ? 'text-gray-500'
+                        : 'text-red-600'
+                    }`}
+                  >
+                    {isSettled ? '✓ ₹0.00' : isCreditor ? `+₹${balance.balance.toFixed(2)}` : `-₹${Math.abs(balance.balance).toFixed(2)}`}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
         {/* Settlement Suggestions */}
         <div className="bg-white rounded-lg shadow p-6 mt-6">
           <h2 className="text-xl font-semibold mb-4">Who Pays Whom</h2>
           {suggestions.length === 0 ? (
-            <p className="text-gray-600">All balances are settled!</p>
+            <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 rounded p-3">
+              <span className="text-xl">🎉</span>
+              <span className="font-medium">All balances are settled!</span>
+            </div>
           ) : (
             <div className="space-y-2">
-              {suggestions.map((s, idx) => (
-                <div key={idx} className="flex justify-between items-center p-3 rounded bg-blue-50 border border-blue-200">
-                  <span className="font-medium">{s.fromUserName} pays {s.toUserName}</span>
-                  <span className="font-semibold text-blue-700">₹{Number(s.amount).toFixed(2)}</span>
-                </div>
-              ))}
+              {suggestions.map((s, idx) => {
+                const alreadyPaid = balances.find(b => b.userId === s.fromUserId && b.balance === 0);
+                return (
+                  <div
+                    key={idx}
+                    className={`flex justify-between items-center p-3 rounded border ${
+                      alreadyPaid
+                        ? 'bg-green-50 border-green-200'
+                        : 'bg-blue-50 border-blue-200'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{s.fromUserName} → {s.toUserName}</span>
+                      {alreadyPaid && (
+                        <span className="text-xs bg-green-100 text-green-700 border border-green-300 rounded-full px-2 py-0.5 font-semibold">
+                          ✓ Paid Done
+                        </span>
+                      )}
+                    </div>
+                    <span className={`font-semibold ${ alreadyPaid ? 'text-green-600 line-through' : 'text-blue-700' }`}>
+                      ₹{Number(s.amount).toFixed(2)}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
