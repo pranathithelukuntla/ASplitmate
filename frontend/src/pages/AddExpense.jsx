@@ -41,16 +41,19 @@ const AddExpense = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">Loading...</div>
+      <div className="container mx-auto px-6 py-12 flex items-center justify-center min-h-[60vh]">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+          <p className="text-slate-500 font-bold animate-pulse">Loading group...</p>
+        </div>
       </div>
     );
   }
 
   if (!group) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+      <div className="container mx-auto px-6 py-12">
+        <div className="bg-red-50 border border-red-100 text-red-600 px-6 py-4 rounded-2xl font-bold">
           Group not found
         </div>
       </div>
@@ -63,14 +66,31 @@ const AddExpense = () => {
   })) || [];
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Add Expense</h1>
+    <div className="container mx-auto px-6 py-12 max-w-2xl animate-fade-in">
+      <div className="mb-10 text-center">
+         <button
+          onClick={() => navigate(`/groups/${id}`)}
+          className="group flex items-center text-indigo-600 hover:text-indigo-700 font-bold mb-8 mx-auto transition-all"
+        >
+          <svg className="w-5 h-5 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to Group
+        </button>
+        <h1 className="text-5xl font-black text-slate-900 mb-2 tracking-tight font-outfit">Add <span className="text-gradient">Expense</span></h1>
+        <p className="text-slate-500 font-medium">Split bills effortlessly with your group</p>
+      </div>
+
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-50 border border-red-100 text-red-600 px-6 py-4 rounded-2xl mb-8 font-bold flex items-center">
+          <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
           {error}
         </div>
       )}
-      <div className="bg-white rounded-lg shadow p-6">
+
+      <div className="glass-card p-10">
         <AddExpenseForm
           groupMembers={groupMembers}
           onSubmit={handleSubmit}

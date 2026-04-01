@@ -16,22 +16,25 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-blue-600 text-white shadow-lg">
-      <div className="container mx-auto px-4 py-3">
+    <nav className="glass-nav">
+      <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-6">
-            <Link to="/dashboard" className="text-xl font-bold">
+          <div className="flex items-center space-x-8">
+            <Link to="/dashboard" className="text-2xl font-extrabold tracking-tight text-gradient font-outfit">
               SplitMate
             </Link>
-            <Link to="/dashboard" className="hover:text-blue-200">
+            <Link to="/dashboard" className="text-slate-600 hover:text-indigo-600 font-medium transition-colors">
               Dashboard
             </Link>
           </div>
-          <div className="flex items-center space-x-4">
-            <span className="text-sm">Hello, {user?.name}</span>
+          <div className="flex items-center space-x-6">
+            <div className="hidden md:flex flex-col items-end">
+              <span className="text-xs font-black uppercase tracking-wider text-slate-600">Account</span>
+              <span className="text-sm font-bold text-slate-800">{user?.name}</span>
+            </div>
             <button
               onClick={handleLogout}
-              className="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded transition"
+              className="bg-white/40 hover:bg-white/60 border border-white/20 text-slate-700 px-5 py-2.5 rounded-xl font-semibold shadow-sm hover:shadow transition-all duration-200 flex items-center"
             >
               Logout
             </button>

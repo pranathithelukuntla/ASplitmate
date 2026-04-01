@@ -26,10 +26,16 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Unauthorized - clear token and redirect to login
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      // Don't redirect if we are already on auth pages or making an auth request
+      const isAuthPath = window.location.pathname === '/login' || window.location.pathname === '/register';
+      const isAuthRequest = error.config.url.includes('/auth/');
+      
+      if (!isAuthPath && !isAuthRequest) {
+        // Unauthorized - clear token and redirect to login
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

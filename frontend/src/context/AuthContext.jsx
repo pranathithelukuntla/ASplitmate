@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { authAPI } from '../api/api';
+import api, { authAPI } from '../api/api';
 
 const AuthContext = createContext(null);
 
@@ -16,6 +16,19 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Wake up the backend on app load (especially for Render free tier cold starts)
+    const wakeUpServer = async () => {
+      try {
+        // Hit the root endpoint just to trigger a spin-up
+        await api.get('/');
+      } catch (e) {
+        // Ignore error - we just want the request to reach the server
+        console.log('Sending wake-up signal to server...');
+      }
+    };
+    
+    wakeUpServer();
+
     // Always clear any previous session on app start — user must log in fresh each time
     localStorage.removeItem('token');
     localStorage.removeItem('user');

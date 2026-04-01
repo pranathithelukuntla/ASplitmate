@@ -27,21 +27,26 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your SplitMate account
-          </h2>
-        </div>
-        <div className="bg-white py-8 px-6 shadow rounded-lg">
-          <RegisterForm onSubmit={handleSubmit} error={error} fieldErrors={fieldErrors} />
-          <p className="mt-4 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
-              Login here
-            </Link>
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-md w-full space-y-8 animate-fade-in">
+        <div className="text-center">
+          <h1 className="text-5xl font-black text-slate-900 mb-2 tracking-tight">
+            Join <span className="text-gradient">SplitMate</span>
+          </h1>
+          <p className="text-slate-500 font-medium">
+            Start splitting expenses with friends today
           </p>
+        </div>
+        <div className="glass-card p-10">
+          <RegisterForm onSubmit={handleSubmit} error={error} fieldErrors={fieldErrors} />
+          <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+            <p className="text-sm font-medium text-slate-600">
+              Already have an account?{' '}
+              <Link to="/login" className="text-indigo-600 hover:text-indigo-500 font-bold decoration-2 underline-offset-4 hover:underline transition-all">
+                Sign in here
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

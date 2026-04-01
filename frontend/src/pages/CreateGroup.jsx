@@ -42,48 +42,62 @@ const CreateGroup = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <div className="mb-6">
+    <div className="container mx-auto px-6 py-12 max-w-2xl animate-fade-in relative">
+      <div className="mb-10 text-center">
         <button
           onClick={() => navigate('/dashboard')}
-          className="text-blue-600 hover:text-blue-800 mb-4"
+          className="group flex items-center text-indigo-600 hover:text-indigo-700 font-bold mb-8 mx-auto transition-all"
         >
-          ← Back to Dashboard
+          <svg className="w-5 h-5 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Back to Dashboard
         </button>
-        <h1 className="text-3xl font-bold text-gray-900">Create New Group</h1>
+        <h1 className="text-5xl font-black text-slate-900 mb-2 tracking-tight font-outfit">Create <span className="text-gradient">Group</span></h1>
+        <p className="text-slate-500 font-medium">Start a new group to track and split expenses together</p>
       </div>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-50 border border-red-100 text-red-600 px-6 py-4 rounded-2xl mb-8 font-bold flex items-center animate-shake">
+           <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
           {error}
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Group Name</label>
+      <div className="glass-card p-10">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-slate-700 ml-1 uppercase tracking-wider">Group Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              placeholder="e.g., Trip to Goa"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., Summer Trip ✈️"
+              className="w-full input-premium py-4 font-bold text-lg"
+              disabled={loading}
             />
+            <p className="text-xs text-slate-400 font-medium ml-1">Tip: Choose a descriptive name your friends will recognize.</p>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex flex-col sm:flex-row gap-4">
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:bg-gray-400"
+              className="flex-1 btn-primary py-4 rounded-2xl shadow-indigo-100 disabled:opacity-50"
             >
-              {loading ? 'Creating...' : 'Create Group'}
+              {loading ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span>Creating Group...</span>
+                </div>
+              ) : 'Create Group 🎉'}
             </button>
             <button
               type="button"
               onClick={() => navigate('/dashboard')}
-              className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-400 transition"
+              className="px-8 bg-white/40 border border-white/20 text-slate-600 py-4 rounded-2xl font-bold hover:bg-white/60 transition-all active:scale-[0.98]"
             >
               Cancel
             </button>

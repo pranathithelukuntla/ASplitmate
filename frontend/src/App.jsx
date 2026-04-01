@@ -19,7 +19,15 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen relative overflow-hidden selection:bg-indigo-100 pb-20">
+          {/* Animated Background Decorative Elements */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
+            <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-400/40 rounded-full blur-[120px] animate-pulse"></div>
+            <div className="absolute top-[20%] -right-[5%] w-[35%] h-[35%] bg-violet-400/40 rounded-full blur-[100px] animate-pulse duration-5000"></div>
+            <div className="absolute top-[60%] -left-[5%] w-[30%] h-[30%] bg-indigo-400/40 rounded-full blur-[110px] animate-pulse"></div>
+            <div className="absolute -bottom-[10%] right-[10%] w-[35%] h-[35%] bg-fuchsia-400/40 rounded-full blur-[110px] animate-pulse duration-7000"></div>
+          </div>
+
           <Navbar />
           <Routes>
             <Route path="/login" element={<Login />} />
